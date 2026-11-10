@@ -22,11 +22,11 @@ public class Monopattino extends Veicolo{
 
     @Override
     Double CalcolaCosto(int minuti) {
-        return 0.0;
+        return minuti * TariffaPerMinuto;
     }
 
     @Override
     Double ConsumoBatteriaPerMinuto() {
-        return 0.0;
+        return ConsumoPerMinuto;
     }
 }

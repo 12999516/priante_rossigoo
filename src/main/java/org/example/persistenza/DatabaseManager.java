@@ -1,8 +1,5 @@
 package org.example.persistenza;
 
-import org.apache.commons.beanutils.converters.SqlDateConverter;
-
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,15 +7,15 @@ import java.sql.Statement;
 
 public class DatabaseManager {
 
-    private static DatabaseManager databaseManager=null;
-    private static final String URL = "jdbc:sqlite:identifier.sqlite";
+    private static DatabaseManager databaseManager = null;
+    private static final String URL = "jdbc:sqlite:rossigo.db";
 
     private DatabaseManager(){
         initDB();
     }
 
     public static synchronized DatabaseManager getInstance(){
-        if (databaseManager==null) {
+        if (databaseManager == null) {
             databaseManager = new DatabaseManager();
         }
         return databaseManager;
@@ -35,10 +32,11 @@ public class DatabaseManager {
 
     private void initDB(){
         String sql = """
-                    CREATE TABLE IF NOT EXISTS utenti (
-                    codice_fiscale TEXT PRIMARY KEY,
+                CREATE TABLE IF NOT EXISTS utenti (
+                    id TEXT PRIMARY KEY,
                     nome TEXT NOT NULL,
                     email TEXT NOT NULL,
+                    codice_fiscale TEXT UNIQUE NOT NULL,
                     credito REAL NOT NULL
                 );
                 
@@ -53,11 +51,11 @@ public class DatabaseManager {
                 
                 CREATE TABLE IF NOT EXISTS noleggi (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    utente_cf TEXT NOT NULL,
+                    utente_id TEXT NOT NULL,
                     veicolo_codice TEXT NOT NULL,
                     orario_inizio TEXT NOT NULL,
                     orario_fine TEXT,
-                    FOREIGN KEY (utente_cf) REFERENCES utenti(codice_fiscale),
+                    FOREIGN KEY (utente_id) REFERENCES utenti(id),
                     FOREIGN KEY (veicolo_codice) REFERENCES veicoli(codice)
                 );
                 """;
